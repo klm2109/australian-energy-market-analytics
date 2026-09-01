@@ -172,12 +172,12 @@ The first machine-learning task treats **RRP** as a continuous target.
 -   **RMSE** --- Root Mean Squared Error
 -   **R²** --- Coefficient of Determination
 
-  Model                 MAE (AUD/MWh)   RMSE (AUD/MWh)          R²
-  ------------------- --------------- ---------------- -----------
-  Mean Baseline                36.147           45.857      -0.070
-  Linear Regression            30.598           39.034       0.225
-  **Decision Tree**        **28.661**       **38.935**   **0.229**
-  Random Forest                31.761           41.516       0.123
+| Model | MAE (AUD/MWh) | RMSE (AUD/MWh) | R² |
+|---|---:|---:|---:|
+| Mean Baseline | 36.147 | 45.857 | -0.070 |
+| Linear Regression | 30.598 | 39.034 | 0.225 |
+| **Decision Tree** | **28.661** | **38.935** | **0.229** |
+| Random Forest | 31.761 | 41.516 | 0.123 |
 
 ### 🏆 Best Regression Model --- Decision Tree
 
@@ -235,16 +235,13 @@ classification problem**. Accuracy alone is therefore insufficient.
 -   Confusion Matrix
 -   ROC Curve
 
-  --------------------------------------------------------------------------
-  Model               Precision         Recall             F1        ROC-AUC
-  -------------- -------------- -------------- -------------- --------------
-  **Logistic          **0.467**      **0.393**      **0.427**      **0.899**
-  Regression**                                                
+###  📊 Classification Model Comparison
 
-  Decision Tree           0.396          0.365          0.380          0.645
-
-  Random Forest           0.464          0.180          0.259          0.883
-  --------------------------------------------------------------------------
+| Model | Precision | Recall | F1 | ROC-AUC |
+|---|---:|---:|---:|---:|
+| **Logistic Regression** | **0.467** | **0.393** | **0.427** | **0.899** |
+| Decision Tree | 0.396 | 0.365 | 0.380 | 0.645 |
+| Random Forest | 0.464 | 0.180 | 0.259 | 0.883 |
 
 ### 🏆 Best Classification Model --- Logistic Regression
 
@@ -259,10 +256,10 @@ thresholds.
 
 # 🔢 9. Logistic Regression Confusion Matrix
 
-                             Predicted Normal   Predicted Price Spike
-  ------------------------ ------------------ -----------------------
-  **Actual Normal**                      1298                      80
-  **Actual Price Spike**                  108                      70
+| Actual \ Predicted | Predicted Normal | Predicted Price Spike |
+|---|---:|---:|
+| **Actual Normal** | 1,298 | 80 |
+| **Actual Price Spike** | 108 | 70 |
 
 The model:
 
