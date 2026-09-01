@@ -1,264 +1,423 @@
 # ⚡ Electricity Demand & Spot Price Analysis
 
-## Overview
+```{=html}
+<p align="center">
+```
+![Python](https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Pandas](https://img.shields.io/badge/Pandas-Data%20Analysis-150458?style=for-the-badge&logo=pandas&logoColor=white)
+![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-Machine%20Learning-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white)
+![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-F37626?style=for-the-badge&logo=jupyter&logoColor=white)
 
-This project explores electricity demand and wholesale spot-price behaviour using
-5-minute electricity market data.
+```{=html}
+</p>
+```
+```{=html}
+<p align="center">
+```
+`<strong>`{=html}Electricity Market Analytics • Data Visualisation •
+Statistical Analysis • Machine Learning`</strong>`{=html}
+```{=html}
+</p>
+```
 
-The analysis investigates how electricity demand changes throughout the day,
-how spot prices behave under different demand conditions, and when extreme
-events such as price spikes and negative electricity prices are most likely to
-occur.
+------------------------------------------------------------------------
 
-The project progresses from exploratory data analysis and visualisation to
-statistical relationship analysis, with a machine-learning extension used to
-investigate whether electricity prices and extreme-price events can be predicted
-from demand and temporal features.
+## 📌 Overview
 
----
+This project explores electricity demand and wholesale spot-price
+behaviour using **5-minute electricity market data** from August 2026.
 
-## Project Objectives
+The project progresses through **data preparation, exploratory data
+analysis, statistical relationship analysis, extreme-price analysis,
+feature engineering, and machine learning**.
 
-The main questions investigated are:
+Two machine-learning problems are investigated:
 
-1. How does electricity demand vary throughout the day?
-2. How do weekday and weekend demand patterns differ?
-3. How do electricity spot prices vary over time and throughout the day?
-4. What is the relationship between electricity demand and spot price?
-5. How does spot-price behaviour change across different demand levels?
-6. When are extreme positive price spikes most likely to occur?
-7. Under what conditions do negative electricity prices occur?
-8. Can machine-learning models predict electricity spot prices or price-spike events?
+1.  📈 **Regression:** predicting continuous Regional Reference Price
+    (RRP).
+2.  🚨 **Classification:** identifying periods with elevated price-spike
+    risk.
 
----
+------------------------------------------------------------------------
 
-## Dataset
+## 🎯 Project Objectives
 
-The analysis uses electricity-market observations recorded at **5-minute
-intervals** during August 2026.
+1.  How does electricity demand vary throughout the day?
+2.  How do weekday and weekend demand patterns differ?
+3.  How do electricity spot prices vary over time?
+4.  What is the relationship between electricity demand and spot price?
+5.  How does spot-price behaviour change across demand levels?
+6.  When are extreme positive price spikes most likely?
+7.  Under what conditions do negative electricity prices occur?
+8.  Can machine-learning models predict electricity spot prices?
+9.  Can machine-learning models identify elevated price-spike risk?
 
-Important variables include:
+------------------------------------------------------------------------
 
-| Variable | Description |
-|---|---|
-| `SETTLEMENTDATE` | Date and time of the market interval |
-| `TOTALDEMAND` | Total electricity demand (MW) |
-| `RRP` | Regional Reference Price ($/MWh) |
-| `hour` | Hour of day extracted from the timestamp |
-| `day_number` | Day of week |
-| `is_weekend` | Indicator for weekday/weekend |
-| `demand_level` | Demand category: Low, Medium, High or Very High |
-| `price_spike` | Indicator identifying unusually high-price observations |
+## 📂 Dataset
 
-Additional features are derived during the analysis to investigate temporal,
-demand and extreme-price patterns.
+  Variable           Description
+  ------------------ -------------------------------------------------
+  `SETTLEMENTDATE`   Date and time of the market interval
+  `TOTALDEMAND`      Total electricity demand (MW)
+  `RRP`              Regional Reference Price (AUD/MWh)
+  `hour`             Hour of day
+  `day_number`       Day of week
+  `is_weekend`       Weekday/weekend indicator
+  `demand_level`     Low, Medium, High or Very High demand
+  `price_spike`      Indicator for unusually high-price observations
 
----
+Additional temporal and cyclical features are derived during the
+analysis.
 
-## Analysis Workflow
+------------------------------------------------------------------------
 
-### 1. Data Preparation
+# 🔎 Exploratory & Statistical Analysis
 
-The raw electricity-market data is cleaned and prepared for analysis.
+## 1. 🧹 Data Preparation
 
 Key preprocessing steps include:
 
-- parsing settlement timestamps;
-- checking missing and duplicate observations;
-- validating electricity demand and RRP values;
-- extracting hour and day-of-week information;
-- identifying weekday and weekend observations; and
-- constructing additional analytical features.
+-   parsing settlement timestamps;
+-   checking missing and duplicate observations;
+-   validating demand and RRP values;
+-   extracting hour and day-of-week information;
+-   identifying weekday/weekend observations;
+-   constructing demand categories; and
+-   creating indicators for extreme-price events.
 
----
+## 2. ⚡ Electricity Demand Analysis
 
-### 2. Electricity Demand Analysis
+The analysis examines hourly demand, peak and minimum periods,
+day-of-week effects, weekday/weekend differences, and intraday profiles.
 
-Electricity demand is analysed across time to identify recurring consumption
-patterns.
+Demand shows a clear daily cycle, with morning and evening increases and
+lower demand around the middle of the day. Weekday demand is generally
+stronger than weekend demand, particularly during morning hours.
 
-The analysis includes:
+## 3. 💰 Electricity Spot Price Analysis
 
-- average electricity demand by hour;
-- peak and minimum demand periods;
-- average demand by day of week;
-- weekday versus weekend demand patterns; and
-- intraday demand profiles.
+RRP is analysed through time-series and distributional visualisations.
+Spot prices are substantially more volatile than electricity demand and
+include both extreme positive observations and negative prices.
 
-The results show a clear daily demand cycle, with morning and evening increases
-and lower demand around the middle of the day.
+## 4. 🔗 Demand--Price Relationship
 
-Weekday demand is generally stronger than weekend demand, particularly during
-the morning period.
+A positive relationship is observed between total demand and RRP.
 
----
-
-### 3. Electricity Spot Price Analysis
-
-Spot-price behaviour is examined using both time-series and distributional
-analysis.
-
-The analysis includes:
-
-- electricity spot prices over time;
-- daily average spot prices;
-- average spot price by hour;
-- distribution of RRP values; and
-- identification of unusually high and negative prices.
-
-Spot prices exhibit substantially greater volatility than electricity demand,
-with occasional extreme positive-price observations and periods of negative
-pricing.
-
----
-
-### 4. Demand–Price Relationship
-
-The relationship between total electricity demand and RRP is investigated using
-scatter plots, regression analysis and demand categories.
-
-A positive relationship is observed between electricity demand and spot price.
-
-A simple linear model produces:
+A simple exploratory linear relationship gives approximately:
 
 **R² ≈ 0.371**
 
-indicating that electricity demand explains a meaningful portion of spot-price
-variation, but substantial variation remains attributable to other market
-conditions.
+Demand therefore explains a meaningful portion of price variation, but
+considerable variation remains associated with other market conditions.
 
-Demand observations are also divided into four equally sized categories:
+Median and average spot prices also increase progressively from **Low**
+to **Very High** demand.
 
-- Low
-- Medium
-- High
-- Very High
+## 5. 🚨 Extreme Price Analysis
 
-Median and average spot prices increase progressively across these demand
-categories.
+### 🔺 Positive Price Spikes
 
----
+Price-spike events are concentrated during particular periods of the
+day. The strongest observed spike risk occurs during the **late
+afternoon and evening**, particularly around **17:00--18:00**.
 
-### 5. Extreme Price Analysis
+Spike probability also rises substantially with demand, with the **Very
+High** demand category showing the greatest risk.
 
-The project separately investigates unusually high prices and negative prices.
+### 🔻 Negative Electricity Prices
 
-#### Positive Price Spikes
+Negative prices show an almost opposite pattern. They occur primarily
+during **lower-demand periods** and are concentrated around midday and
+early afternoon.
 
-Price-spike events are concentrated during particular periods of the day.
+The highest observed negative-price probability occurs around **14:00**,
+and negative prices are overwhelmingly associated with the **Low
+demand** category.
 
-The highest spike risk occurs during the late afternoon and evening, with a
-particularly strong concentration around **17:00–18:00**.
+> **Key insight:** Low-demand periods are more exposed to negative
+> electricity prices, while very high-demand periods are substantially
+> more exposed to extreme positive-price events.
 
-Price-spike probability also increases substantially with electricity demand.
-The Very High demand category experiences a much greater spike rate than the
-Low, Medium and High categories.
+------------------------------------------------------------------------
 
-#### Negative Electricity Prices
+# 🤖 Machine Learning Extension
 
-Negative prices show almost the opposite pattern.
+The machine-learning extension tests whether the patterns found during
+exploratory analysis can be translated into useful predictive models.
 
-They are primarily concentrated during lower-demand periods and occur most
-frequently around the middle of the day.
+> 📈 **Can demand and temporal features predict continuous electricity
+> spot prices?**
 
-The probability of a negative price reaches its highest level at approximately
-**14:00**, while negative prices are overwhelmingly associated with the Low
-demand category.
+> 🚨 **Can demand and temporal features identify periods at elevated
+> risk of a price spike?**
 
-Together, these findings indicate that:
+------------------------------------------------------------------------
 
-> **Low-demand periods are more exposed to unusually low or negative electricity
-> prices, while very high-demand periods are substantially more exposed to
-> extreme positive-price events.**
+## 6. 🧠 Feature Engineering
 
----
+Predictive features include:
 
-## Machine Learning Extension
+-   `TOTALDEMAND`
+-   `is_weekend`
+-   `hour_sin`
+-   `hour_cos`
+-   `dow_sin`
+-   `dow_cos`
 
-The next stage of the project applies machine-learning methods to determine
-whether the patterns identified during exploratory analysis can be translated
-into predictive models.
+Hour and day-of-week are cyclical variables, so sine and cosine
+transformations are used to preserve their recurring structure.
 
-Two prediction problems are considered.
+A **chronological train-test split** is used so that earlier
+observations train the models and later observations evaluate them.
 
-### Spot Price Prediction
+------------------------------------------------------------------------
 
-A regression task is used to predict continuous RRP values using features such
-as:
+# 📈 7. Electricity Spot-Price Prediction
 
-- electricity demand;
-- hour of day;
-- day of week; and
-- weekday/weekend status.
+The first machine-learning task treats **RRP** as a continuous target.
 
-Candidate models include:
+### 🌳 Regression Models
 
-- Linear Regression
-- Polynomial Regression
-- Decision Tree Regression
-- Random Forest Regression
+-   Mean Baseline
+-   Linear Regression
+-   Decision Tree Regressor
+-   Random Forest Regressor
 
-Model performance can be evaluated using MAE, RMSE and R².
+### 📏 Evaluation Metrics
 
-### Price-Spike Prediction
+-   **MAE** --- Mean Absolute Error
+-   **RMSE** --- Root Mean Squared Error
+-   **R²** --- Coefficient of Determination
 
-Price-spike prediction is formulated as a binary classification problem.
+  Model                 MAE (AUD/MWh)   RMSE (AUD/MWh)          R²
+  ------------------- --------------- ---------------- -----------
+  Mean Baseline                36.147           45.857      -0.070
+  Linear Regression            30.598           39.034       0.225
+  **Decision Tree**        **28.661**       **38.935**   **0.229**
+  Random Forest                31.761           41.516       0.123
 
-Candidate models include:
+### 🏆 Best Regression Model --- Decision Tree
 
-- Logistic Regression
-- Decision Tree Classifier
-- Random Forest Classifier
+The **Decision Tree Regressor** achieves the lowest MAE and RMSE and the
+highest R² among the tested regression models.
 
-Because price spikes represent a relatively small proportion of observations,
-model evaluation focuses on metrics such as **precision, recall, F1-score,
-confusion matrices and ROC-AUC**, rather than relying only on classification
-accuracy.
+-   **MAE:** 28.661 AUD/MWh
+-   **RMSE:** 38.935 AUD/MWh
+-   **R²:** 0.229
 
-A chronological train-test split is used where appropriate so that earlier
-observations are used to predict later market behaviour.
+The trained models outperform the mean baseline on MAE and RMSE, showing
+that demand and temporal features contain useful predictive information.
 
----
+However, the modest R² demonstrates that these features alone cannot
+explain most spot-price variation.
 
-## Key Findings
+### 📊 Actual vs Predicted RRP
 
-The analysis identifies several important patterns:
+The Decision Tree captures several broad price regimes, but its
+predictions are smoother and more step-like than actual RRP.
 
-- Electricity demand follows a clear intraday cycle.
-- Weekday and weekend demand profiles differ, particularly during morning hours.
-- Electricity spot prices are substantially more volatile than electricity demand.
-- Higher electricity demand is generally associated with higher spot prices.
-- Demand alone does not fully explain spot-price behaviour (`R² ≈ 0.371`).
-- Median electricity prices rise progressively from Low to Very High demand.
-- Positive price spikes are concentrated around high-demand morning and evening periods.
-- Price-spike risk increases sharply under Very High electricity demand.
-- Negative prices predominantly occur during low-demand periods.
-- Negative-price risk is concentrated around midday and early afternoon.
-- Extreme positive and negative prices therefore exhibit distinctly different demand and time-of-day patterns.
+The largest errors occur during sudden extreme-price movements.
 
----
+> **Interpretation:** Demand and temporal variables are useful for
+> estimating general electricity-price conditions, but additional market
+> information is required to accurately predict short-lived extreme
+> events.
 
-## Technologies
+------------------------------------------------------------------------
 
-The project is developed using **Python** and Jupyter Notebook.
+# 🚨 8. Price-Spike Classification
 
-Main libraries include:
+The second task is binary classification:
 
-```text
-pandas
-numpy
-matplotlib
-scikit-learn
-```
+  Class   Meaning
+  ------- -----------------
+  `0`     ⚪ Normal Price
+  `1`     🔴 Price Spike
 
-These tools are used for data cleaning, transformation, exploratory analysis,
-visualisation, statistical modelling and machine learning.
+Because spikes are relatively rare, this is an **imbalanced
+classification problem**. Accuracy alone is therefore insufficient.
 
----
+### 🤖 Classification Models
 
-## Repository Structure
+-   Logistic Regression
+-   Decision Tree Classifier
+-   Random Forest Classifier
 
-```text
+### 📏 Evaluation Metrics
+
+-   Precision
+-   Recall
+-   F1-score
+-   ROC-AUC
+-   Confusion Matrix
+-   ROC Curve
+
+  --------------------------------------------------------------------------
+  Model               Precision         Recall             F1        ROC-AUC
+  -------------- -------------- -------------- -------------- --------------
+  **Logistic          **0.467**      **0.393**      **0.427**      **0.899**
+  Regression**                                                
+
+  Decision Tree           0.396          0.365          0.380          0.645
+
+  Random Forest           0.464          0.180          0.259          0.883
+  --------------------------------------------------------------------------
+
+### 🏆 Best Classification Model --- Logistic Regression
+
+**Logistic Regression** provides the strongest overall classification
+performance.
+
+Its **ROC-AUC ≈ 0.90** indicates strong ability to rank higher-risk
+observations above lower-risk observations across classification
+thresholds.
+
+------------------------------------------------------------------------
+
+# 🔢 9. Logistic Regression Confusion Matrix
+
+                             Predicted Normal   Predicted Price Spike
+  ------------------------ ------------------ -----------------------
+  **Actual Normal**                      1298                      80
+  **Actual Price Spike**                  108                      70
+
+The model:
+
+-   ✅ correctly identifies **1,298 normal intervals**;
+-   🚨 correctly detects **70 price spikes**;
+-   ⚠️ produces **80 false spike warnings**; and
+-   ❌ misses **108 actual spikes**.
+
+For the spike class:
+
+-   **Precision ≈ 0.47**
+-   **Recall ≈ 0.39**
+-   **F1 ≈ 0.43**
+
+Overall accuracy is approximately **88%**, but this should be
+interpreted cautiously because normal observations greatly outnumber
+spikes.
+
+At the default threshold, the model detects roughly four out of every
+ten observed price spikes.
+
+------------------------------------------------------------------------
+
+# 📉 10. ROC Curve
+
+Approximate ROC-AUC values are:
+
+-   🥇 **Logistic Regression --- 0.90**
+-   🥈 **Random Forest --- 0.88**
+-   🥉 **Decision Tree --- 0.65**
+
+Logistic Regression provides the strongest discrimination.
+
+Its high ROC-AUC but moderate recall at the default threshold suggests
+that **threshold optimisation** could be useful when missing a price
+spike is more costly than generating a false alarm.
+
+------------------------------------------------------------------------
+
+# 🔍 11. Logistic Regression Model Interpretation
+
+Because Logistic Regression is the strongest classifier, its
+**coefficients** are used for interpretation rather than tree-based
+`feature_importances_`.
+
+-   A **positive coefficient** is associated with higher predicted
+    log-odds of a price spike.
+-   A **negative coefficient** is associated with lower predicted
+    log-odds.
+-   Larger absolute coefficients indicate stronger predictive influence
+    within the fitted model.
+
+The cyclical pairs `hour_sin`/`hour_cos` and `dow_sin`/`dow_cos` should
+be interpreted jointly.
+
+> ⚠️ Coefficients describe **predictive associations**, not causal
+> effects.
+
+------------------------------------------------------------------------
+
+# 💡 Key Findings
+
+-   ⚡ Electricity demand follows a clear intraday cycle.
+-   📅 Weekday and weekend demand profiles differ.
+-   💰 Spot prices are substantially more volatile than demand.
+-   📈 Higher demand is generally associated with higher RRP.
+-   🔺 Median prices increase from Low to Very High demand.
+-   🚨 Positive price spikes are concentrated in high-demand
+    morning/evening periods.
+-   🌆 Spike risk is especially elevated around **17:00--18:00**.
+-   🔻 Negative prices predominantly occur during Low demand.
+-   ☀️ Negative-price risk is concentrated around midday and early
+    afternoon.
+-   🌳 **Decision Tree Regression** is the strongest tested model for
+    continuous RRP prediction.
+-   📊 **Logistic Regression** is the strongest tested model for spike
+    classification.
+-   🎯 Logistic Regression achieves approximately **0.90 ROC-AUC**.
+-   ⚠️ Moderate recall shows that rare extreme events remain difficult
+    to detect at the default threshold.
+-   🧠 Demand and temporal features are informative but do not fully
+    explain electricity-market volatility.
+
+------------------------------------------------------------------------
+
+# 🛠️ Technologies & Tools
+
+## 💻 Programming
+
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+
+## 📊 Data Analysis
+
+![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)
+![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white)
+
+## 🤖 Machine Learning
+
+![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white)
+![Regression](https://img.shields.io/badge/Regression-4285F4?style=for-the-badge)
+![Classification](https://img.shields.io/badge/Classification-FF6F00?style=for-the-badge)
+![Feature
+Engineering](https://img.shields.io/badge/Feature%20Engineering-6A5ACD?style=for-the-badge)
+
+## 📈 Visualisation
+
+![Matplotlib](https://img.shields.io/badge/Matplotlib-11557C?style=for-the-badge)
+![Data
+Visualization](https://img.shields.io/badge/Data%20Visualization-2196F3?style=for-the-badge)
+
+## ⚙️ Development
+
+![Jupyter](https://img.shields.io/badge/Jupyter-F37626?style=for-the-badge&logo=jupyter&logoColor=white)
+![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
+![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
+
+------------------------------------------------------------------------
+
+# 🧩 Skills Demonstrated
+
+![EDA](https://img.shields.io/badge/Exploratory%20Data%20Analysis-4CAF50?style=flat-square)
+![Statistics](https://img.shields.io/badge/Statistical%20Analysis-00897B?style=flat-square)
+![Feature
+Engineering](https://img.shields.io/badge/Feature%20Engineering-673AB7?style=flat-square)
+![Regression](https://img.shields.io/badge/Regression-1976D2?style=flat-square)
+![Classification](https://img.shields.io/badge/Classification-E65100?style=flat-square)
+![Model
+Evaluation](https://img.shields.io/badge/Model%20Evaluation-455A64?style=flat-square)
+![Energy
+Analytics](https://img.shields.io/badge/Energy%20Analytics-FFC107?style=flat-square)
+
+------------------------------------------------------------------------
+
+# 🗂️ Repository Structure
+
+``` text
 electricity-demand-price-analysis/
 │
 ├── data/
@@ -274,55 +433,75 @@ electricity-demand-price-analysis/
 └── requirements.txt
 ```
 
-> File names and repository structure may differ depending on the final project
+> Exact file names may differ depending on the final repository
 > organisation.
 
----
+------------------------------------------------------------------------
 
-## Limitations
+# ⚠️ Limitations
 
-This analysis focuses on a relatively short observation period and uses a
-limited set of explanatory variables.
+The project uses a relatively short observation period and a limited set
+of explanatory variables.
 
-Electricity prices are influenced by many factors beyond total demand,
-including generation availability, renewable generation, transmission
-constraints, weather, generator bidding behaviour and other electricity-market
-conditions.
+Electricity prices can also be influenced by:
 
-Therefore, relationships identified in this project should primarily be
-interpreted as **associations rather than causal effects**.
+-   renewable-generation output;
+-   generator availability;
+-   transmission constraints;
+-   interconnector conditions;
+-   weather;
+-   generator bidding behaviour; and
+-   broader market events.
 
-The machine-learning models should similarly be interpreted as exploratory
-predictive models rather than production electricity-price forecasting systems.
+The observed relationships should therefore be interpreted primarily as
+**associations rather than causal effects**.
 
----
+The machine-learning models are exploratory predictive models rather
+than production forecasting systems.
 
-## Future Work
+------------------------------------------------------------------------
 
-Several extensions could improve the project:
+# 🚀 Future Work
 
-- incorporate weather variables such as temperature;
-- include renewable-generation information;
-- investigate lagged electricity demand and price features;
-- develop time-series forecasting models;
-- compare additional machine-learning algorithms;
-- perform feature-importance analysis;
-- investigate model performance across different time periods; and
-- extend the dataset across multiple months or years.
+Potential extensions include:
 
----
+-   🌡️ incorporating temperature and other weather variables;
+-   ☀️ adding solar and wind generation;
+-   ⏱️ creating lagged RRP and demand features;
+-   📈 adding rolling averages and recent demand changes;
+-   🧠 comparing gradient-boosting and additional algorithms;
+-   🎯 optimising the price-spike probability threshold;
+-   ⚖️ investigating additional class-imbalance techniques;
+-   🔬 applying permutation importance or SHAP;
+-   📅 extending the dataset across multiple months or years;
+-   🔄 using time-series cross-validation;
+-   📉 developing dedicated time-series forecasting models; and
+-   🚨 modelling positive spikes and negative-price events separately.
 
-## Conclusion
+------------------------------------------------------------------------
 
-This project demonstrates an end-to-end data-science workflow for analysing
-electricity-market behaviour.
+# 🏁 Conclusion
 
-Exploratory analysis reveals strong temporal patterns in electricity demand and
-spot prices, while relationship analysis shows that higher demand is associated
-with higher prices and increased positive price-spike risk. In contrast,
-negative electricity prices are concentrated during lower-demand periods around
-the middle of the day.
+This project demonstrates an end-to-end data-science workflow for
+analysing electricity-market behaviour.
 
-The machine-learning extension builds on these findings by investigating whether
-demand and temporal characteristics can be used to predict electricity prices
-and identify periods at elevated risk of extreme pricing.
+Exploratory analysis reveals strong temporal patterns in electricity
+demand and spot prices. Higher demand is generally associated with
+higher prices and increased positive price-spike risk, while negative
+prices are concentrated during lower-demand periods around midday and
+early afternoon.
+
+For continuous spot-price prediction, the **Decision Tree Regressor**
+performs best among the tested regression models, although the modest R²
+and Actual-vs-Predicted analysis show that demand and temporal
+information alone cannot explain sudden market volatility.
+
+For price-spike classification, **Logistic Regression** provides the
+strongest overall results, achieving approximately **0.90 ROC-AUC**. Its
+moderate recall nevertheless shows that reliably detecting rare
+extreme-price events remains challenging.
+
+Overall, the project highlights both the value and limitations of
+applying statistical analysis and machine learning to electricity-market
+data and provides a foundation for richer energy forecasting using
+market, renewable-generation and weather information.
